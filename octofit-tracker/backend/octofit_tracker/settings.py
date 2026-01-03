@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-$3)m0+^h_qgnj7h8yg$$7(s30gta+(!vx0#!3tgmnewe5$)&8d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+import os
+CODESPACE_NAME = os.environ.get('CODESPACE_NAME')
+codespace_host = f"{CODESPACE_NAME}-8000.app.github.dev" if CODESPACE_NAME else None
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+if codespace_host:
+    ALLOWED_HOSTS.append(codespace_host)
 
 
 # Application definition
@@ -38,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'rest_framework',
+    'djongo',
+    'octofit_tracker',
 ]
 
 MIDDLEWARE = [
@@ -126,7 +134,11 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # CORS settings - during development allow all origins. Tighten for production.
+## CORS settings - allow all origins, methods, and headers for development.
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = ['*']
+CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 
 # If you prefer to only allow specific origins, replace above with:
 # CORS_ALLOWED_ORIGINS = [
